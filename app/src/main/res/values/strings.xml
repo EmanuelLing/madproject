@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">madproject</string>
+    <string name="title_home">Home</string>
+    <string name="title_ordercart">Order Cart</string>
+    <string name="title_orderhistory">Order History</string>
+</resources>
