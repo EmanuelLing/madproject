@@ -13,4 +13,9 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+    <style name="Theme.MadProject.Splash" parent="Theme.Material3.Dark">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@color/dark_purple</item> <!-- Set background color for Splash -->
+    </style>
+
 </resources>
