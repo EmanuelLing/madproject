@@ -23,6 +23,7 @@ import com.example.madproject.MainActivity;
 import com.example.madproject.R;
 import com.example.madproject.ui.landing.LandingActivity;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -113,19 +114,64 @@ public class LoginActivity extends AppCompatActivity {
                 jsonObject.put("custUsername", username.getText().toString());
                 jsonObject.put("password", password.getText().toString());
 
-                // Add Remember Me checkbox in layout
-                CheckBox rememberMeCheckbox = findViewById(R.id.cbRememberMe);
+                URL loginUrl = new URL("https://hushed-charming-clipper.glitch.me/customer/login");
+                HttpURLConnection loginConnection = (HttpURLConnection) loginUrl.openConnection();
+                loginConnection.setRequestMethod("POST");
+                loginConnection.setRequestProperty("Content-Type", "application/json");
+                loginConnection.setDoOutput(true);
 
-                URL url = new URL("https://hushed-charming-clipper.glitch.me/customer/login");
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("POST");
-                connection.setRequestProperty("Content-Type", "application/json");
-                connection.setDoOutput(true);
-
-                try (OutputStream os = connection.getOutputStream()) {
+                try (OutputStream os = loginConnection.getOutputStream()) {
                     byte[] input = jsonObject.toString().getBytes(StandardCharsets.UTF_8);
                     os.write(input, 0, input.length);
                 }
+
+                int responseCode = loginConnection.getResponseCode();
+                Handler mainHandler = new Handler(Looper.getMainLooper());
+
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    try (BufferedReader br = new BufferedReader(
+                            new InputStreamReader(loginConnection.getInputStream(), StandardCharsets.UTF_8))) {
+                        StringBuilder response = new StringBuilder();
+                        String responseLine;
+                        while ((responseLine = br.readLine()) != null) {
+                            response.append(responseLine.trim());
+                        }
+
+                        // Parse login response
+                        JSONObject responseJson = new JSONObject(response.toString());
+                        JSONObject userJson = responseJson.getJSONObject("user");
+
+                        String userId = userJson.getString("custId");
+                        String username = userJson.getString("custUsername");
+
+                        // Fetch full name from customer API
+                        fetchCustomerName(userId, username);
+                    }
+                } else if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
+                    mainHandler.post(() ->
+                            Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show()
+                    );
+                } else {
+                    mainHandler.post(() ->
+                            Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show()
+                    );
+                }
+            } catch (Exception e) {
+                Log.e("LoginError", "Error during login", e);
+                Handler mainHandler = new Handler(Looper.getMainLooper());
+                mainHandler.post(() ->
+                        Toast.makeText(LoginActivity.this, "Network error: " + e.getMessage(), Toast.LENGTH_LONG).show()
+                );
+            }
+        });
+    }
+    private void fetchCustomerName(String userId, String username) {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                URL url = new URL("https://hushed-charming-clipper.glitch.me/customer");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
 
                 int responseCode = connection.getResponseCode();
                 Handler mainHandler = new Handler(Looper.getMainLooper());
@@ -139,52 +185,50 @@ public class LoginActivity extends AppCompatActivity {
                             response.append(responseLine.trim());
                         }
 
-                        // Parse JSON response
-                        JSONObject responseJson = new JSONObject(response.toString());
-                        JSONObject userJson = responseJson.getJSONObject("user");
+                        // Parse customer data
+                        JSONArray customers = new JSONArray(response.toString());
+                        for (int i = 0; i < customers.length(); i++) {
+                            JSONObject customer = customers.getJSONObject(i);
+                            if (customer.getString("custUsername").equals(username)) {
+                                String fullName = customer.getString("custName");
 
-                        String userId = userJson.getString("custId");
-                        String username = userJson.getString("custUsername");
-                        String fullName = userJson.getString("custName");
+                                // Update UI with the user's name
+                                mainHandler.post(() -> {
+                                    Toast.makeText(LoginActivity.this, "Welcome, " + fullName, Toast.LENGTH_SHORT).show();
+                                    saveUserCredentials(
+                                            userId,
+                                            username,
+                                            password.getText().toString(),
+                                            fullName,
+                                            cbRememberMe.isChecked()
+                                    );
 
-                        // Save user data to SharedPreferences
-                        mainHandler.post(() -> {
-                            saveUserCredentials(
-                                    userId,
-                                    username,
-                                    password.getText().toString(),
-                                    fullName,
-                                    rememberMeCheckbox.isChecked()
-                            );
-
-                            Toast.makeText(LoginActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
-                        });
+                                    // Redirect to MainActivity
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    intent.putExtra("userId", userId); // Pass the userId
+                                    intent.putExtra("fullName", fullName);
+                                    startActivity(intent);
+                                    finish();
+                                });
+                                break;
+                            }
+                        }
                     }
-                }
-                else if(responseCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
+                } else {
                     mainHandler.post(() ->
-                            Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show()
-                    );
-                }
-                else {
-                    mainHandler.post(() ->
-                            Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(LoginActivity.this, "Failed to fetch customer data", Toast.LENGTH_SHORT).show()
                     );
                 }
             } catch (Exception e) {
-                Log.e("LoginError", "Error during login", e);
+                Log.e("FetchCustomerError", "Error during fetching customer data", e);
                 Handler mainHandler = new Handler(Looper.getMainLooper());
                 mainHandler.post(() ->
-                        Toast.makeText(LoginActivity.this,
-                                "Network error: " + e.getMessage(),
-                                Toast.LENGTH_LONG).show()
+                        Toast.makeText(LoginActivity.this, "Network error: " + e.getMessage(), Toast.LENGTH_LONG).show()
                 );
             }
         });
     }
+
 
     @Override
     public void onBackPressed() {

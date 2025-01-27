@@ -10,7 +10,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.madproject.MainActivity;
 import com.example.madproject.R;
 import com.example.madproject.ui.authentication.LoginActivity;
 import com.example.madproject.ui.authentication.RegisterActivity;
@@ -29,7 +28,7 @@ import com.example.madproject.ui.authentication.RegisterActivity;
 
             // Navigate to MainActivity when Log In is clicked
             loginButton.setOnClickListener(v -> {
-                Intent intent = new Intent(LandingActivity.this, LoginActivity.class);
+                Intent intent = new Intent(LandingActivity.this,LoginActivity.class);
                 startActivity(intent);
             });
 

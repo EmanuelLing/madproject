@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -24,6 +26,21 @@
         </activity>
 
         <activity
+            android:name=".ui.orderhistory.OrderHistory"
+            android:exported="false"
+            android:label="Order History" />
+
+        <activity
+            android:name=".ui.ordercart.AddToCart"
+            android:exported="false"
+            android:label="Add to Cart" />
+
+        <activity
+            android:name=".ui.home.FoodDrink_Detail"
+            android:exported="false"
+            android:label="Food/Drink Details" />
+
+        <activity
             android:name=".ui.landing.LandingActivity"
             android:exported="false"
             android:theme="@style/Theme.MadProject.Splash"/>
@@ -42,6 +59,7 @@
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name">
+
         </activity>
     </application>
 
