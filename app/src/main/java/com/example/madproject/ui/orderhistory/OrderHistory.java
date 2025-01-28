@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,6 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.madproject.DatabaseHelper;
 import com.example.madproject.R;
+import com.example.madproject.ui.ordercart.AddToCart;
+import com.example.madproject.MainActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +50,31 @@ public class OrderHistory extends AppCompatActivity {
         // Initialize adapter and set it to RecyclerView
         orderAdapter = new OrderAdapter(orderList, this);
         orderRecyclerView.setAdapter(orderAdapter);
+
+        // Setup Bottom Navigation
+        //setupBottomNavigation();
     }
+
+    /*private void setupBottomNavigation() {
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setSelectedItemId(R.id.navigation_orderhistory);
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+                    startActivity(new Intent(OrderHistory.this, MainActivity.class));
+                    overridePendingTransition(0, 0);
+                    return true;
+                case R.id.navigation_ordercart:
+                    startActivity(new Intent(OrderHistory.this, AddToCart.class));
+                    overridePendingTransition(0, 0);
+                    return true;
+                case R.id.navigation_orderhistory:
+                    return true; // Current page
+            }
+            return false;
+        });
+    }*/
 
     private void fetchOrdersFromDatabase() {
         Cursor cursor = dbHelper.getAllOrder();
@@ -75,8 +103,6 @@ public class OrderHistory extends AppCompatActivity {
         }
     }
 
-
-
     private void changeOrderStatusAfterDelay(OrderModel order) {
         handler.postDelayed(() -> {
             // Update the order status to "completed" in the local object
@@ -96,7 +122,6 @@ public class OrderHistory extends AppCompatActivity {
             showNotification();
         }, 7000); // 7 seconds delay
     }
-
 
     private void showNotification() {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

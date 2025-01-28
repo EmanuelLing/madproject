@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.madproject.DatabaseHelper;
 import com.example.madproject.R;
 import com.example.madproject.ui.orderhistory.OrderHistory;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -52,7 +53,30 @@ public class AddToCart extends AppCompatActivity {
 
         // Checkout button logic
         setupCheckoutButton(cartItems);
+        // Setup Bottom Navigation
+        //setupBottomNavigation();
     }
+
+    /*private void setupBottomNavigation() {
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setSelectedItemId(R.id.navigation_ordercart);
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+                    startActivity(new Intent(AddToCart.this, MainActivity.class));
+                    overridePendingTransition(0, 0);
+                    return true;
+                case R.id.navigation_orderhistory:
+                    startActivity(new Intent(AddToCart.this, OrderHistory.class));
+                    overridePendingTransition(0, 0);
+                    return true;
+                case R.id.navigation_ordercart:
+                    return true; // Already on this page
+            }
+            return false;
+        });
+    }*/
 
     private void showEmptyCart() {
         emptyTxt.setVisibility(View.VISIBLE);

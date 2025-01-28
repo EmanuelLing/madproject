@@ -16,6 +16,7 @@
         android:layout_height="0dp"
         android:scaleType="centerCrop"
         app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="50dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.4"
@@ -88,7 +89,7 @@
             android:layout_height="40dp"
             android:adjustViewBounds="true"
             android:scaleType="centerInside"
-            android:src="@drawable/minimize_sign"/>
+            android:src="@drawable/iconminus"/>
 
         <TextView
             android:id="@+id/tv_quantity"
@@ -107,7 +108,7 @@
             android:layout_height="40dp"
             android:adjustViewBounds="true"
             android:scaleType="centerInside"
-            android:src="@drawable/plus"/>
+            android:src="@drawable/iconplus"/>
 
         <Button
             android:id="@+id/btn_addOrder"

@@ -15,7 +15,7 @@
     </style>
     <style name="Theme.MadProject.Splash" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowFullscreen">true</item>
-        <item name="android:windowBackground">@color/dark_purple</item> <!-- Set background color for Splash -->
+        <item name="android:windowBackground">@color/gold</item> <!-- Set background color for Splash -->
         <item name="buttonStyle">@style/CustomButtonStyle1</item>
     </style>
 </resources>

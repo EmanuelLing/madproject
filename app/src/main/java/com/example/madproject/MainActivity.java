@@ -10,11 +10,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.madproject.ui.home.FoodMenuAdapter;
 import com.example.madproject.ui.home.FoodMenuResponse;
 import com.example.madproject.ui.home.MenuDrinkModel;
 import com.example.madproject.ui.home.MenuFoodModel;
+import com.example.madproject.ui.ordercart.AddToCart;
+import com.example.madproject.ui.orderhistory.OrderHistory;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.activity.EdgeToEdge;
@@ -83,8 +85,29 @@ public class MainActivity extends AppCompatActivity {
         // Fetch menus and setup spinner
         fetchMenus();
         setupSpinnerListener();
+        //setupBottomNavigation();
     }
 
+   /* private void setupBottomNavigation() {
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.navigation_orderhistory:
+                    startActivity(new Intent(MainActivity.this, OrderHistory.class));
+                    overridePendingTransition(0, 0);
+                    return true;
+                case R.id.navigation_ordercart:
+                    startActivity(new Intent(MainActivity.this, AddToCart.class));
+                    overridePendingTransition(0, 0);
+                    return true;
+                case R.id.navigation_home:
+                    return true; // Current page
+            }
+            return false;
+        });
+    }*/
 
     private void fetchMenus() {
         Retrofit retrofit = new Retrofit.Builder()
