@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.madproject.MainActivity;
 
 import com.example.madproject.DatabaseHelper;
 import com.example.madproject.R;
@@ -54,29 +55,33 @@ public class AddToCart extends AppCompatActivity {
         // Checkout button logic
         setupCheckoutButton(cartItems);
         // Setup Bottom Navigation
-        //setupBottomNavigation();
+        setupBottomNavigation();
     }
 
-    /*private void setupBottomNavigation() {
+    private void setupBottomNavigation() {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        // Highlight the current menu item
         bottomNavigationView.setSelectedItemId(R.id.navigation_ordercart);
 
+        // Set listener for menu item selection
         bottomNavigationView.setOnItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    startActivity(new Intent(AddToCart.this, MainActivity.class));
-                    overridePendingTransition(0, 0);
-                    return true;
-                case R.id.navigation_orderhistory:
-                    startActivity(new Intent(AddToCart.this, OrderHistory.class));
-                    overridePendingTransition(0, 0);
-                    return true;
-                case R.id.navigation_ordercart:
-                    return true; // Already on this page
+            int itemId = item.getItemId();
+            if (itemId == R.id.navigation_home) {
+                startActivity(new Intent(AddToCart.this, MainActivity.class));
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (itemId == R.id.navigation_orderhistory) {
+                startActivity(new Intent(AddToCart.this, OrderHistory.class));
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (itemId == R.id.navigation_ordercart) {
+                // Do nothing as it's the current page
+                return true;
             }
             return false;
         });
-    }*/
+    }
 
     private void showEmptyCart() {
         emptyTxt.setVisibility(View.VISIBLE);

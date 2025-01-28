@@ -52,29 +52,33 @@ public class OrderHistory extends AppCompatActivity {
         orderRecyclerView.setAdapter(orderAdapter);
 
         // Setup Bottom Navigation
-        //setupBottomNavigation();
+        setupBottomNavigation();
     }
 
-    /*private void setupBottomNavigation() {
+    private void setupBottomNavigation() {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        // Highlight the current menu item
         bottomNavigationView.setSelectedItemId(R.id.navigation_orderhistory);
 
+        // Set listener for menu item selection
         bottomNavigationView.setOnItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    startActivity(new Intent(OrderHistory.this, MainActivity.class));
-                    overridePendingTransition(0, 0);
-                    return true;
-                case R.id.navigation_ordercart:
-                    startActivity(new Intent(OrderHistory.this, AddToCart.class));
-                    overridePendingTransition(0, 0);
-                    return true;
-                case R.id.navigation_orderhistory:
-                    return true; // Current page
+            int itemId = item.getItemId();
+            if (itemId == R.id.navigation_home) {
+                startActivity(new Intent(OrderHistory.this, MainActivity.class));
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (itemId == R.id.navigation_ordercart) {
+                startActivity(new Intent(OrderHistory.this, AddToCart.class));
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (itemId == R.id.navigation_orderhistory) {
+                // Do nothing as it's the current page
+                return true;
             }
             return false;
         });
-    }*/
+    }
 
     private void fetchOrdersFromDatabase() {
         Cursor cursor = dbHelper.getAllOrder();

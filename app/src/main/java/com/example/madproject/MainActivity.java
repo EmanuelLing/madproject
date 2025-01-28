@@ -85,29 +85,34 @@ public class MainActivity extends AppCompatActivity {
         // Fetch menus and setup spinner
         fetchMenus();
         setupSpinnerListener();
-        //setupBottomNavigation();
+        setupBottomNavigation();
     }
 
-   /* private void setupBottomNavigation() {
+    private void setupBottomNavigation() {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        // Highlight the current menu item
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
 
+        // Set listener for menu item selection
         bottomNavigationView.setOnItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.navigation_orderhistory:
-                    startActivity(new Intent(MainActivity.this, OrderHistory.class));
-                    overridePendingTransition(0, 0);
-                    return true;
-                case R.id.navigation_ordercart:
-                    startActivity(new Intent(MainActivity.this, AddToCart.class));
-                    overridePendingTransition(0, 0);
-                    return true;
-                case R.id.navigation_home:
-                    return true; // Current page
+            int itemId = item.getItemId();
+            if (itemId == R.id.navigation_orderhistory) {
+                startActivity(new Intent(MainActivity.this, OrderHistory.class));
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (itemId == R.id.navigation_ordercart) {
+                startActivity(new Intent(MainActivity.this, AddToCart.class));
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (itemId == R.id.navigation_home) {
+                // Do nothing as it's the current page
+                return true;
             }
             return false;
         });
-    }*/
+    }
+
 
     private void fetchMenus() {
         Retrofit retrofit = new Retrofit.Builder()
