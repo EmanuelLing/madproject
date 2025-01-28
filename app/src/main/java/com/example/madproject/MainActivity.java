@@ -21,14 +21,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.madproject.databinding.ActivityMainBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private List<MenuFoodModel> allFoodItems = new ArrayList<>();
     private List<MenuDrinkModel> allDrinkItems = new ArrayList<>();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +54,15 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String userId = intent.getStringExtra("userId");
         String fullName = intent.getStringExtra("fullName");
+
+        SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+
+        if (userId == null) {
+            userId = sharedPreferences.getString("userId", null);
+        }
+        if (fullName == null) {
+            fullName = sharedPreferences.getString("fullName", null);
+        }
 
         TextView username = findViewById(R.id.tv_username);
         username.setText("Welcome Back, " + fullName);
