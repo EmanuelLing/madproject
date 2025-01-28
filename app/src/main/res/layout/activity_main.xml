@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/gold"
     tools:context=".MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation">
 
         <Space
             android:id="@+id/sp_spacer"
@@ -23,21 +27,31 @@
             android:layout_height="wrap_content"
             android:text="TextView"
             android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:textSize="30sp"
             android:textStyle="bold" />
+
+        <Space
+            android:id="@+id/sp_spacer2"
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
 
         <Spinner
             android:id="@+id/item_type"
             android:layout_width="135dp"
             android:layout_height="45dp"
+            android:layout_marginLeft="10dp"
             android:textAlignment="viewStart"
-            android:layout_marginLeft="10dp"/>
+            android:background="@android:drawable/editbox_background"
+            android:popupBackground="@android:color/white"
+            android:padding="8dp"
+            android:textColor="@android:color/black"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_foodMenu"
             android:layout_width="match_parent"
-            android:layout_height="585dp" />
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
     </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -51,4 +65,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
